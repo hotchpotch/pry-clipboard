@@ -115,7 +115,26 @@ EOF
 'foo'
 'foobar'
 EOF
-    mock_pry(*%w(1 'foo' 'foobar' 'baz' copy-history\ --grep\ foo)).should =~ /clipboard/
+    mock_pry(*%w(
+      1
+      'foo'
+      'foobar'
+      'baz'
+      copy-history\ --grep\ foo)
+    ).should =~ /clipboard/
+  end
+
+  it "#copy-history --range 1..2 --grep foo" do
+    mock(Clipboard).copy <<EOF
+'foo'
+EOF
+    mock_pry(*%w(
+      1
+      'foo'
+      'foobar'
+      'baz'
+      copy-history\ --range\ 1..2\ --grep\ foo)
+    ).should =~ /clipboard/
   end
 
   it "#copy-result" do
