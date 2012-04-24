@@ -1,5 +1,3 @@
-module Pry
-  module Clipboard
-    VERSION = "0.0.1"
-  end
+module PryClipboard
+  VERSION = "0.0.1"
 end
