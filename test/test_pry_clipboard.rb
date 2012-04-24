@@ -15,22 +15,51 @@ describe PryClipboard::Command do
   end
 
   it "#copy-history" do
-    mock(Clipboard).copy("'abc'\n")
-    mock(Clipboard).copy("'efg'\n")
-    mock_pry("'abc'", "copy-history").should =~ /clipboard.*\n'abc'\n/
-    mock_pry("'abc'", "'efg'", "copy-history").should =~ /clipboard.*\n'efg'\n/
+    mock(Clipboard).copy <<EOF
+'abc'
+EOF
+    mock(Clipboard).copy <<EOF
+"efg"
+EOF
+
+    mock_pry(*%w(
+      'abc'
+      copy-history
+    )).should =~ /clipboard.*\n'abc'\n/
+
+    mock_pry(*%w(
+      'abc'
+      "efg"
+      copy-history
+    )).should =~ /clipboard.*\n"efg"\n/
   end
 
   it "#copy-history -l" do
     mock(Clipboard).copy("10 * 10\n#=> 100\n")
-    mock_pry("10 * 10", "copy-history -l").should =~ /clipboard.*\n10 \* 10\n#=> 100\n/
+    mock_pry(*%w(
+      10\ *\ 10
+      copy-history\ -l
+    )).should =~ /clipboard.*\n10 \* 10\n#=> 100\n/
   end
 
   it "#copy-history -q" do
-    mock(Clipboard).copy("'abc'\n")
-    mock(Clipboard).copy("'efg'\n")
-    mock_pry("'abc'", "copy-history -q").should.not =~ /clipboard.*\n'abc'\n/
-    mock_pry("'abc'", "'efg'", "copy-history -q").should.not =~ /clipboard.*\n'efg'\n/
+    mock(Clipboard).copy <<EOF
+'abc'
+EOF
+    mock(Clipboard).copy <<EOF
+"efg"
+EOF
+
+    mock_pry(*%w(
+      'abc'
+      copy-history\ -q
+    )).should.not =~ /clipboard.*\n'abc'\n/
+
+    mock_pry(*%w(
+      'abc'
+      "efg"
+      copy-history\ -q
+    )).should.not =~ /clipboard.*\n"efg"\n/
   end
 
   it "#copy-history --head 3" do
@@ -39,7 +68,14 @@ describe PryClipboard::Command do
 2
 3
 EOF
-    mock_pry(*%w(1 2 3 4 5 copy-history\ --head\ 3)).should =~ /clipboard/
+    mock_pry(*%w(
+      1
+      2
+      3
+      4
+      5
+      copy-history\ --head\ 3
+    )).should =~ /clipboard/
   end
 
   it "#copy-history --tail 3" do
@@ -48,7 +84,14 @@ EOF
 4
 5
 EOF
-    mock_pry(*%w(1 2 3 4 5 copy-history\ --tail\ 3)).should =~ /clipboard/
+    mock_pry(*%w(
+      1
+      2
+      3
+      4
+      5
+      copy-history\ --tail\ 3
+    )).should =~ /clipboard/
   end
 
   it "#copy-history --range 2..4" do
@@ -57,7 +100,14 @@ EOF
 3
 4
 EOF
-    mock_pry(*%w(1 2 3 4 5 copy-history\ --range\ 2..4)).should =~ /clipboard/
+    mock_pry(*%w(
+      1
+      2
+      3
+      4
+      5
+      copy-history\ --range\ 2..4
+    )).should =~ /clipboard/
   end
 
   it "#copy-history --grep foo" do
