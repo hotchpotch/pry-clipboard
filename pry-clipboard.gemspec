@@ -16,4 +16,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'pry'
   gem.add_dependency 'clipboard'
+
+  gem.add_development_dependency 'rr', '~> 1.0'
+  gem.add_development_dependency 'bacon', '~> 1.1'
+  gem.add_development_dependency 'open4', '~> 1.3'
+  gem.add_development_dependency 'rake'
 end

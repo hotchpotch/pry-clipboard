@@ -45,11 +45,12 @@ module PryClipboard
       end
 
       def process
-        Clipboard.copy _pry_.last_result
+        res = "#{_pry_.last_result}\n"
+        Clipboard.copy res
 
         unless opts.present?(:q)
           _pry_.output.puts text.green("-*-*- Copy result to clipboard -*-*-")
-          _pry_.output.puts _pry_.last_result
+          _pry_.output.print res
         end
       end
     end
