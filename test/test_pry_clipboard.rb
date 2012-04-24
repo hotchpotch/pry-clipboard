@@ -48,7 +48,24 @@ EOF
 4
 5
 EOF
-    mock_pry(*%w(3 4 5 copy-history\ --tail\ 3)).should =~ /clipboard/
+    mock_pry(*%w(1 2 3 4 5 copy-history\ --tail\ 3)).should =~ /clipboard/
+  end
+
+  it "#copy-history --range 2..4" do
+    mock(Clipboard).copy <<EOF
+2
+3
+4
+EOF
+    mock_pry(*%w(1 2 3 4 5 copy-history\ --range\ 2..4)).should =~ /clipboard/
+  end
+
+  it "#copy-history --grep foo" do
+    mock(Clipboard).copy <<EOF
+'foo'
+'foobar'
+EOF
+    mock_pry(*%w(1 'foo' 'foobar' 'baz' copy-history\ --grep\ foo)).should =~ /clipboard/
   end
 
   it "#copy-result" do

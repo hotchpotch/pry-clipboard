@@ -23,18 +23,22 @@ module PryClipboard
         opt.on :H, :head, "Copy the first N items.", :optional => true, :as => Integer
         opt.on :T, :tail, "Copy the last N items.", :optional => true, :as => Integer
         opt.on :R, :range, "Copy the given range of lines.", :optional => true, :as => Range
+        opt.on :G, :grep, "Copy lines matching the given pattern.", :optional => true, :as => String
         opt.on :q, :quiet, "quiet output", :optional => true
       end
 
       def process
         history = Pry::Code(Pry.history.to_a)
+        history = history.grep(opts[:grep]) if opts.present?(:grep)
         history = case
-        when opts.present?(:head)
-          history.take_lines(1, opts[:head] || 10)
-        when opts.present?(:tail)
-          history.take_lines(-(opts[:tail] || 10), opts[:tail] || 10)
         when opts.present?(:range)
           history.between(opts[:range])
+        when opts.present?(:head)
+          history.take_lines(1, opts[:head] || 10)
+        when opts.present?(:tail) || opts.present?(:grep)
+          n = opts[:tail] || 10
+          n = history.lines.count if n > history.lines.count
+          history.take_lines(-n, n)
         else
           history.take_lines(-1, 1)
         end
