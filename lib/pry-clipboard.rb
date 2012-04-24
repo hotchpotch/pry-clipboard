@@ -15,14 +15,14 @@ module PryClipboard
           e.g: `copy-history -l`
           e.g: `copy-history -H 10`
           e.g: `copy-history -T 5`
-          e.g: `copy-history -r 5..10`
+          e.g: `copy-history -R 5..10`
       BANNER
 
       def options(opt)
         opt.on :l, "Copy history with last result", :optional => true
         opt.on :H, :head, "Copy the first N items.", :optional => true, :as => Integer
         opt.on :T, :tail, "Copy the last N items.", :optional => true, :as => Integer
-        opt.on :r, :range, "Copy the given range of lines.", :optional => true, :as => Range
+        opt.on :R, :range, "Copy the given range of lines.", :optional => true, :as => Range
         opt.on :q, :quiet, "quiet output", :optional => true
       end
 
