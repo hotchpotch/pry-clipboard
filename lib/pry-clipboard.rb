@@ -5,6 +5,18 @@ require "pry-clipboard/version"
 
 module PryClipboard
   Command = Pry::CommandSet.new do
+    create_command "paste" do
+      description "Paste from clipboard"
+
+      banner <<-BANNER
+        Usage: paste
+      BANNER
+
+      def process
+        eval_string << Clipboard.paste
+      end
+    end
+
     create_command "copy-history" do
       description "Copy history to clipboard"
 

@@ -14,6 +14,13 @@ describe PryClipboard::Command do
     RR.verify
   end
 
+  it "#paste" do
+    mock(Clipboard).paste { '3 * 3' }
+    mock_pry(*%w(
+      paste
+    )).should =~ /=> 9/
+  end
+
   it "#copy-history" do
     mock(Clipboard).copy <<EOF
 'abc'
