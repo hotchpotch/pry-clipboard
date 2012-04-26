@@ -9,11 +9,20 @@ module PryClipboard
       description "Paste from clipboard"
 
       banner <<-BANNER
-        Usage: paste
+        Usage: paste [-q|--quiet]
       BANNER
 
+      def options(opt)
+        opt.on :q, :quiet, "quiet output", :optional => true
+      end
+
       def process
-        eval_string << Clipboard.paste
+        str = Clipboard.paste
+        unless opts.present?(:q)
+          _pry_.output.puts text.green("-*-*- Paste from clipboard -*-*-")
+          _pry_.output.puts str
+        end
+        eval_string << str
       end
     end
 

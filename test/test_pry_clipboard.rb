@@ -18,7 +18,14 @@ describe PryClipboard::Command do
     mock(Clipboard).paste { '3 * 3' }
     mock_pry(*%w(
       paste
-    )).should =~ /=> 9/
+    )).should =~ /Paste from clipboard.*\n3 \* 3\n=> 9/
+  end
+
+  it "#paste -q" do
+    mock(Clipboard).paste { '3 * 3' }
+    mock_pry(*%w(
+      paste\ -q
+    )).should.not =~ /Paste from clipboard/
   end
 
   it "#copy-history" do
