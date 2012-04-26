@@ -30,10 +30,11 @@ module PryClipboard
       description "Copy history to clipboard"
 
       banner <<-BANNER
-          Usage: copy-history [-T|--tail N] [-H|--head N] [-R|--range N..M]  [-G|--grep match] [-l] [-q|--quiet]
+          Usage: copy-history [N] [-T|--tail N] [-H|--head N] [-R|--range N..M]  [-G|--grep match] [-l] [-q|--quiet]
 
           e.g: `copy-history`
           e.g: `copy-history -l`
+          e.g: `copy-history 10`
           e.g: `copy-history -H 10`
           e.g: `copy-history -T 5`
           e.g: `copy-history -R 5..10`
@@ -50,18 +51,23 @@ module PryClipboard
 
       def process
         history = Pry::Code(Pry.history.to_a)
-        history = history.grep(opts[:grep]) if opts.present?(:grep)
-        history = case
-        when opts.present?(:range)
-          history.between(opts[:range])
-        when opts.present?(:head)
-          history.take_lines(1, opts[:head] || 10)
-        when opts.present?(:tail) || opts.present?(:grep)
-          n = opts[:tail] || 10
-          n = history.lines.count if n > history.lines.count
-          history.take_lines(-n, n)
+
+        history = if num_arg
+          history.take_lines(num_arg, 1)
         else
-          history.take_lines(-1, 1)
+          history = history.grep(opts[:grep]) if opts.present?(:grep)
+          case
+          when opts.present?(:range)
+            history.between(opts[:range])
+          when opts.present?(:head)
+            history.take_lines(1, opts[:head] || 10)
+          when opts.present?(:tail) || opts.present?(:grep)
+            n = opts[:tail] || 10
+            n = history.lines.count if n > history.lines.count
+            history.take_lines(-n, n)
+          else
+            history.take_lines(-1, 1)
+          end
         end
 
         str = history.raw
@@ -71,6 +77,15 @@ module PryClipboard
         unless opts.present?(:q)
           _pry_.output.puts text.green("-*-*- Copy history to clipboard -*-*-")
           _pry_.output.puts str
+        end
+      end
+
+      def num_arg
+        first = args[0]
+        if first && first.to_i.to_s == first
+          first.to_i
+        else
+          nil
         end
       end
     end

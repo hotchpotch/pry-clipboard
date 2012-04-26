@@ -78,7 +78,7 @@ pry(main)> paste
 => 15
 ```
 
-### --head / --tail options
+### N / --head / --tail options
 
 ```ruby
 pry(main)> history --tail 10
@@ -92,6 +92,9 @@ pry(main)> history --tail 10
 11: history --tail 10
 12: copy-result --tail 3
 13: copy-history --tail 3
+pry(main)> copy-history 9
+-*-*- Copy history to clipboard -*-*-
+'hello' * 3
 pry(main)> copy-history -tail 5
 -*-*- Copy history to clipboard -*-*-
 copy-result

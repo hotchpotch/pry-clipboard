@@ -48,6 +48,15 @@ EOF
     )).should =~ /clipboard.*\n"efg"\n/
   end
 
+  it "#copy-history 2" do
+    mock_pry(*%w(
+      'foo'
+      'bar'
+      'baz'
+      copy-history\ 2
+    )).should =~ /clipboard.*\n'bar'\n/
+  end
+
   it "#copy-history -l" do
     mock(Clipboard).copy("10 * 10\n#=> 100\n")
     mock_pry(*%w(
