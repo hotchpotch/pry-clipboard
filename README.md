@@ -31,6 +31,7 @@ end
 require 'pry-clipboard'
 copy-history --help
 copy-result --help
+paste --help
 ```
 
 ### Copy history to clipboard
@@ -66,6 +67,15 @@ pry(main)> 'hello' * 3
 pry(main)> copy-result
 -*-*- Copy result to clipboard -*-*-
 hellohellohello
+```
+
+### paste
+
+```ruby
+pry(main)> Clipboard.copy '3 * 5'
+=> "3 * 5"
+pry(main)> paste
+=> 15
 ```
 
 ### --head / --tail options
