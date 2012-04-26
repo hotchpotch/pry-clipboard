@@ -30,7 +30,7 @@ module PryClipboard
       description "Copy history to clipboard"
 
       banner <<-BANNER
-          Usage: copy-history [-r] [-q|--quiet]
+          Usage: copy-history [-T|--tail N] [-H|--head N] [-R|--range N..M]  [-G|--grep match] [-l] [-q|--quiet]
 
           e.g: `copy-history`
           e.g: `copy-history -l`
