@@ -17,7 +17,7 @@ module PryClipboard
       end
 
       def process
-        str = Clipboard.paste
+        str = Clipboard::Mac.paste
         unless opts.present?(:q)
           _pry_.output.puts text.green("-*-*- Paste from clipboard -*-*-")
           _pry_.output.puts str
@@ -72,7 +72,7 @@ module PryClipboard
 
         str = history.raw
         str += "#=> #{_pry_.last_result}\n" if opts.present?(:l)
-        Clipboard.copy str
+        Clipboard::Mac.copy str
 
         unless opts.present?(:q)
           _pry_.output.puts text.green("-*-*- Copy history to clipboard -*-*-")
